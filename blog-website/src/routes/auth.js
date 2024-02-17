@@ -2,12 +2,29 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const path = require("path");
 
-const User = require("../models/User");
-const { route } = require("./main");
+const jwt = require('jsonwebtoken');
+const jwtSecret = process.env.JWT_SECRET;
 
+const User = require("../models/User");
 const router = express.Router();
 
-router.get("/", (req, res) => {
+const authMiddleware = (req, res, next) => {
+  const token = req.cookies.token;
+
+  if (!token) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, jwtSecret);
+    req.userId = decoded.userId;
+    next();
+  } catch (error) {
+    res.status(401).json({ message: "Unauthorized" });
+  }
+};
+
+router.get("/", authMiddleware, (req, res) => {
   res.send({
     message: "Welcome to the authentication route",
   });
@@ -33,22 +50,21 @@ router.post("/login", async (req, res) => {
 
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(400).send({
-        message: "User does not exist",
-      });
+      return res.status(400).send({ message: "User does not exist" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).send({
-        message: "Invalid credentials",
-      });
+      return res.status(400).send({ message: "Invalid credentials" });
     }
 
-    res.send({
-      message: "Logged in",
-      user,
+    const token = jwt.sign({ userId: user._id }, jwtSecret, { expiresIn: "30d" });
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true
     });
+
+    res.redirect("/");
   } catch (error) {
     console.log(error);
     res.status(500).send({
@@ -95,6 +111,11 @@ router.post("/register", async (req, res) => {
       message: "Internal server error",
     });
   }
+});
+
+router.get("/logout", (req, res) => {
+  res.clearCookie("token");
+  res.redirect("/auth/login");
 });
 
 module.exports = router;

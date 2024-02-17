@@ -26,6 +26,7 @@ body {
   max-width: 500px;
   margin: 0 auto;
   padding: 2rem;
+  padding-bottom: 1rem;
   background-color: #fff;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -62,4 +63,12 @@ button {
 
 button:hover {
   background-color: #ea580c;
+}
+
+a {
+  color: #f97316;
+}
+
+a:hover {
+  color: #ea580c;
 }

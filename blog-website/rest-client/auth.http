@@ -1,3 +1,8 @@
+### Auth route
+GET http://localhost:3000/auth/
+Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWNmOWE3MGExMWMzNGFlM2Y3ZmMyYjciLCJpYXQiOjE3MDgxNTE0OTR9.Flo6FxXGpVH1bFRsjQGbm9YxF5NRHxj_4-8zszjTG1U; Path=/; HttpOnly; Secure
+
+
 ### Register
 
 POST http://localhost:3000/auth/register

@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Register Page</title>
-    <link rel="stylesheet" href="/assets/css/register.css" />
+    <link rel="stylesheet" href="/assets/css/auth.css" />
   </head>
 
   <body>
@@ -14,26 +14,30 @@
           <h1>Register</h1>
           <div class="form-group">
             <label for="username">Username</label>
-            <input type="text" id="username" name="username" />
+            <input type="text" id="username" name="username" required />
           </div>
           <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" id="email" name="email" />
+            <input type="email" id="email" name="email" required />
           </div>
           <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" id="password" name="password" />
+            <input type="password" id="password" name="password" required />
           </div>
           <div class="form-group">
             <label for="passwordConfirm">Confirm Password</label>
-            <input type="password" id="passwordConfirm" name="passwordConfirm" />
+            <input
+              type="password"
+              id="passwordConfirm"
+              name="passwordConfirm"
+              required
+            />
           </div>
           <button type="submit">Register</button>
+
+          <p>Already have an account? <a href="/login">Login</a></p>
         </form>
       </div>
     </div>
-
-    <script src="/assets/js/register.js"></script>
-
   </body>
 </html>
