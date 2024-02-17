@@ -1,0 +1,59 @@
+### User 1
+@postId = 65d0a308aa750a7088462e27
+# @userId = 65d09cbd8a95cd5dd5e3c3d4
+# @token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWQwOWNiZDhhOTVjZDVkZDVlM2MzZDQiLCJpYXQiOjE3MDgxNzA0NDMsImV4cCI6MTcxMDc2MjQ0M30.lsjM9o1xOyv1WKAIIVA0oEfeHJb2Id5Nk2NrfJYrRW0
+
+### User 2
+# @postId = 65d0a89eb4c9e9fedbce8251
+@userId = 65d0a65b549bddef1c31be8d
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWQwYTY1YjU0OWJkZGVmMWMzMWJlOGQiLCJpYXQiOjE3MDgxNzMxMDcsImV4cCI6MTcxMDc2NTEwN30.1Jx2cxW-jZ6kHYRbhvaLe_cbqIdZpencZl8OovbVH9k
+
+
+### Dashboard
+
+GET http://localhost:3000/api/dashboard
+Cookie: token={{token}}; Path=/; HttpOnly; Secure
+Content-Type: application/json; charset=utf-8
+
+### Create a new Post
+POST http://localhost:3000/api/posts/create
+Cookie: token={{token}}; Path=/; HttpOnly; Secure
+Content-Type: application/json; charset=utf-8
+
+{
+  "title": "My first post by priyanshu",
+  "content": "This is my first post"
+}
+
+### Get All Posts
+GET http://localhost:3000/api/posts
+
+### Get Post by ID
+GET http://localhost:3000/api/posts/{{postId}}
+
+### Get Post by User ID
+GET http://localhost:3000/api/user/{{userId}}/posts
+
+
+### Update Post by ID
+PUT http://localhost:3000/api/posts/{{postId}}
+Cookie: token={{token}}; Path=/; HttpOnly; Secure
+Content-Type: application/json; charset=utf-8
+
+{
+  "title": "Priyanshu's updated post",
+  "content": "This is my updated post"
+}
+
+### Delete Post by ID
+DELETE http://localhost:3000/api/posts/{{postId}}
+Cookie: token={{token}}; Path=/; HttpOnly; Secure
+
+### Add Comment to Post
+POST http://localhost:3000/api/posts/{{postId}}/comment
+Cookie: token={{token}}; Path=/; HttpOnly; Secure
+Content-Type: application/json; charset=utf-8
+
+{
+  "text": "This is my first comment"
+}

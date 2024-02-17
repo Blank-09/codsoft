@@ -18,4 +18,8 @@ router.get("/register", (req, res) => {
   res.redirect("/auth/register");
 });
 
+router.get("/dashboard", (req, res) => {
+  res.sendFile(path.join(__dirname, "../pages/dashboard.html"));
+})
+
 module.exports = router;

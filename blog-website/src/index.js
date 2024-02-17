@@ -1,7 +1,7 @@
 require("dotenv").config();
 
 const express = require("express");
-const session = require('express-session');
+const session = require("express-session");
 const cookieParser = require("cookie-parser");
 
 const app = express();
@@ -21,12 +21,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Session
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: true, maxAge: 60000 }
-}))
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: true, maxAge: 60000 },
+  })
+);
 
 // Static Files
 app.use(express.static("public"));

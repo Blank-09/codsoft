@@ -2,7 +2,7 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const path = require("path");
 
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 const jwtSecret = process.env.JWT_SECRET;
 
 const User = require("../models/User");
@@ -58,10 +58,12 @@ router.post("/login", async (req, res) => {
       return res.status(400).send({ message: "Invalid credentials" });
     }
 
-    const token = jwt.sign({ userId: user._id }, jwtSecret, { expiresIn: "30d" });
+    const token = jwt.sign({ userId: user._id }, jwtSecret, {
+      expiresIn: "30d",
+    });
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true
+      secure: true,
     });
 
     res.redirect("/");
@@ -98,7 +100,7 @@ router.post("/register", async (req, res) => {
         email,
         password: hashedPassword,
       });
-      res.status(201).json({ message: "User Created", user });
+      res.status(201).json({ message: "User Created", data: { id: user._id } });
     } catch (error) {
       if (error.code === 11000) {
         res.status(409).json({ message: "User already in use" });
@@ -119,3 +121,4 @@ router.get("/logout", (req, res) => {
 });
 
 module.exports = router;
+module.exports.authMiddleware = authMiddleware;

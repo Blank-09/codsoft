@@ -1,6 +1,13 @@
+### Variables
+
+@username = "Priyanshu T"
+@password = "123456"
+@email = "priyanshu9943@gmail.com"
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWQwYTY1YjU0OWJkZGVmMWMzMWJlOGQiLCJpYXQiOjE3MDgxNzMxMDcsImV4cCI6MTcxMDc2NTEwN30.1Jx2cxW-jZ6kHYRbhvaLe_cbqIdZpencZl8OovbVH9k
+
 ### Auth route
 GET http://localhost:3000/auth/
-Cookie: token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NWNmOWE3MGExMWMzNGFlM2Y3ZmMyYjciLCJpYXQiOjE3MDgxNTE0OTR9.Flo6FxXGpVH1bFRsjQGbm9YxF5NRHxj_4-8zszjTG1U; Path=/; HttpOnly; Secure
+Cookie: token={{token}}; Path=/; HttpOnly; Secure
 
 
 ### Register
@@ -9,9 +16,9 @@ POST http://localhost:3000/auth/register
 Content-Type: application/json
 
 {
-  "username": "test",
-  "email": "test@gmail.com",
-  "password": "test"
+  "username": {{username}},
+  "email": {{email}},
+  "password": {{password}}
 }
 
 
@@ -21,6 +28,6 @@ POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-  "email": "test@gmail.com",
-  "password": "test"
+  "email": {{email}},
+  "password": {{password}}
 }
