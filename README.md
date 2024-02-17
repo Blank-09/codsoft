@@ -4,7 +4,7 @@ Welcome to CodSoft repo! This repository contains the projects I worked on durin
 
 ## 📁 Projects
 
-### 📝 Blogging Platform
+### 1. Blogging Platform 📝
 
 The Blogging Platform is a comprehensive web application developed using technologies like HTML, CSS, JavaScript, Node.js, Express.js, and MongoDB. It is designed to provide a user-friendly platform for blogging and interaction.
 
@@ -19,7 +19,7 @@ The Blogging Platform is a comprehensive web application developed using technol
 - 🔍 **Search Functionality**: Basic search functionality is implemented to help users find specific blog posts.
 - 📱 **Mobile-Friendly Design**: The platform is responsive and optimized for mobile devices, ensuring accessibility on all devices.
 
-### 📊 Project Management Tool
+### 2. Project Management Tool 📊
 
 The Project Management Tool is a comprehensive web application developed using React, Node.js, Express.js, and MongoDB. It is designed to facilitate efficient project management and team collaboration.
 
