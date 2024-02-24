@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ExpressJS Blog Website</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="/assets/css/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/assets/css/styles.css" />
+    <script src="/assets/js/swiper-bundle.min.js"></script>
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <script defer src="/assets/js/script.js"></script>
+  </head>
+
+  <body>
+    <%- include("./partials/navbar.ejs") %>
+
+    <div class="container my-5">
+      <div class="position-relative w-100">
+        <div class="swiper">
+          <!-- Additional required wrapper -->
+          <div class="swiper-wrapper">
+            <!-- Slides -->
+            <div class="swiper-slide bg-dark rounded">Slide 1</div>
+            <div class="swiper-slide bg-dark rounded">Slide 2</div>
+            <div class="swiper-slide bg-dark rounded">Slide 3</div>
+            <div class="swiper-slide bg-dark rounded">Slide 4</div>
+            <div class="swiper-slide bg-dark rounded">Slide 5</div>
+            <div class="swiper-slide bg-dark rounded">Slide 6</div>
+            <div class="swiper-slide bg-dark rounded">Slide 7</div>
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+        <div id="swiper-button-prev" class="shadow">
+          <i class="fas fa-chevron-left"></i>
+        </div>
+        <div id="swiper-button-next" class="shadow">
+          <i class="fas fa-chevron-right"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="container my-5">
+      <div class="row">
+        <div class="col-md-8">
+          <div class="row">
+            <% posts.forEach((post) => { %>
+            <div class="col-md-6">
+              <div class="card mb-4">
+                <img
+                  src="<%= post.image %>"
+                  class="card-img-top"
+                  alt="<%= post.title %>"
+                />
+                <div class="card-body">
+                  <h5 class="card-title"><%= post.title %></h5>
+                  <p class="card-text">
+                    <%= post.content.substring(0, 100) %>...
+                  </p>
+                  <a href="/post/<%= post._id %>" class="btn btn-dark"
+                    >Read More</a
+                  >
+                </div>
+                <div class="card-footer">
+                  <small class="text-muted">
+                    <i class="far fa-user"></i> <%- post.author.username %> |
+                    <i class="far fa-calendar"></i>
+                    <%= new Date(post.createdAt).toDateString() %>
+                  </small>
+                </div>
+              </div>
+            </div>
+            <% }) %>
+          </div>
+        </div>
+        <div class="col-md-4"><%- include("./partials/sidebar.ejs") %></div>
+      </div>
+    </div>
+
+    <%- include("./partials/footer.ejs") %>
+
+    <script>
+      const swiper = new Swiper(".swiper", {
+        slidesPerView: 1,
+        spaceBetween: 15,
+
+        // Responsive breakpoints
+        breakpoints: {
+          480: { slidesPerView: 2 },
+          640: { slidesPerView: 3 },
+          992: { slidesPerView: 4 },
+          1200: { slidesPerView: 5 },
+        },
+
+        // Optional parameters
+        direction: "horizontal",
+        loop: true,
+
+        // If we need pagination
+        pagination: {
+          el: ".swiper-pagination",
+          clickable: true,
+        },
+
+        // Navigation arrows
+        navigation: {
+          nextEl: "#swiper-button-next",
+          prevEl: "#swiper-button-prev",
+        },
+      });
+    </script>
+  </body>
+</html>

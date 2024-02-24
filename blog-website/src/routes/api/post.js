@@ -5,7 +5,7 @@ const Comment = require("../../models/Comment");
 const { authMiddleware } = require("../auth.js");
 
 // Get a post by id
-router.get("/posts/:id", async (req, res) => {
+router.get("/post/:id", async (req, res) => {
   try {
     const { id } = req.params;
     const post = await Post.findById(id)
@@ -30,12 +30,12 @@ router.get("/posts/:id", async (req, res) => {
 });
 
 // Create a new post
-router.post("/posts/create", authMiddleware, async (req, res) => {
+router.post("/post/create", authMiddleware, async (req, res) => {
   try {
     const { title, content } = req.body;
     const post = new Post({ title, content, creator: req.userId });
     await post.save();
-    res.status(201).send({ message: "Post Created", data: { id: post._id } });
+    res.redirect(`/post/${post._id}`);
   } catch (error) {
     console.log(error);
     res.status(500).send({ message: "Error creating the post" });
@@ -43,7 +43,7 @@ router.post("/posts/create", authMiddleware, async (req, res) => {
 });
 
 // Update a post by id
-router.put("/posts/:id", authMiddleware, async (req, res) => {
+router.post("/post/edit/:id", authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;
     const { title, content } = req.body;
@@ -55,21 +55,20 @@ router.put("/posts/:id", authMiddleware, async (req, res) => {
 
     // Check if the authenticated user is the creator of the post
     if (post.creator.toString() !== req.userId) {
-      return res.status(403).send({ message: "Unauthorized" });
+      return res.status(403).send({ message: "Forbidden" });
     }
 
     post.title = title;
     post.content = content;
     await post.save();
-    res.send({ message: "Post Updated" });
+    res.redirect(`/post/${post._id}`);
   } catch (error) {
     res.status(500).send({ message: "Error updating the post" });
   }
 });
 
 // Delete a post by id
-
-router.delete("/posts/:id", authMiddleware, async (req, res) => {
+router.delete("/post/delete/:id", authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;
     const post = await Post.findById(id);
@@ -123,7 +122,7 @@ router.get("/posts", async (req, res) => {
 router.post("/posts/:postId/comment", authMiddleware, async (req, res) => {
   try {
     const { postId } = req.params;
-    const { text } = req.body;
+    const { comment: text } = req.body;
 
     // Create a new comment
     const comment = new Comment({ text, creator: req.userId });
@@ -134,8 +133,10 @@ router.post("/posts/:postId/comment", authMiddleware, async (req, res) => {
     post.comments.push(comment._id);
     await post.save();
 
-    res.send({ message: "Comment added successfully" });
+    res.redirect(`/post/${postId}`);
+    // res.send({ message: "Comment added successfully" });
   } catch (error) {
+    console.log(error);
     res.status(500).send({ message: "Internal Server Error" });
   }
 });

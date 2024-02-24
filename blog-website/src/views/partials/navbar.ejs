@@ -1,0 +1,78 @@
+<nav class="navbar navbar-expand-lg bg-white shadow-sm">
+  <div class="container">
+    <a class="navbar-brand fw-semibold" href="/"
+      >ExpressJS<span class="text-orange">.blog</span></a
+    >
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <form class="d-flex input-group" action="/search" method="GET">
+            <input
+              class="form-control shadow-none"
+              type="search"
+              name="q"
+              placeholder="Search..."
+              aria-label="Search"
+            />
+            <button class="btn btn-dark" type="submit">
+              <i class="fas fa-search"></i>
+            </button>
+          </form>
+        </li>
+      </ul>
+      <div class="d-flex gap-1">
+        <% if (user) { %>
+        <a href="/post/create" class="btn btn-outline-dark me-2">Create Post</a>
+
+        <div class="dropdown">
+          <button
+            class="btn btn-dark"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <i class="far fa-user"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-lg-end p-2 shadow-sm border-0">
+            <li>
+              <a class="dropdown-item" href="/<%- user._id %>">
+                <div><%- user.username %></div>
+                <small>@<%- user.email %></small>
+              </a>
+            </li>
+            <li><hr class="dropdown-divider" /></li>
+            <li>
+              <a class="dropdown-item" href="/profile">Profile</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="/post/create">Create Post</a>
+            </li>
+            <li>
+              <a class="dropdown-item" href="/settings">Settings</a>
+            </li>
+            <li><hr class="dropdown-divider" /></li>
+            <li>
+              <a class="dropdown-item" href="/logout">Logout</a>
+            </li>
+          </ul>
+        </div>
+
+        <% } else { %>
+        <a href="/login" class="btn btn-outline-dark me-2">Login</a>
+        <a href="/register" class="btn btn-dark">Register</a>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</nav>

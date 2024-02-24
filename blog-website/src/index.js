@@ -20,6 +20,10 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+// View Engine
+app.set("view engine", "ejs");
+app.set("views", "src/views");
+
 // Session
 app.use(
   session({

@@ -1,0 +1,33 @@
+<div class="sidebar">
+  <div class="card mb-3 border-0 shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title">Recent Posts</h5>
+      <ul class="list-group list-group-flush">
+        <% recentPosts.forEach((post) => { %>
+        <li class="list-group-item px-0">
+          <a class="text-dark" href="/post/<%= post._id %>"
+            ><%= post.title %></a
+          >
+        </li>
+        <% }) %>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card mb-3 border-0 shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title">Categories</h5>
+      <ul class="list-group list-group-flush">
+        <% categories.forEach((category) => { %>
+        <li class="list-group-item px-0">
+          <a
+            class="text-dark"
+            href="/category/<%= category.name.toLowerCase().replaceAll(' ', '-') %>"
+            ><%= category.name %> (<%- category.posts %>)</a
+          >
+        </li>
+        <% }) %>
+      </ul>
+    </div>
+  </div>
+</div>
