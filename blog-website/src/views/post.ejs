@@ -11,6 +11,7 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
+    <link rel="icon" href="/assets/img/blog.png" />
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/assets/css/github-markdown-light.min.css" />
     <link rel="stylesheet" href="/assets/css/styles.css" />
@@ -22,11 +23,14 @@
     <main class="container my-4">
       <div class="row gx-3 gy-3">
         <div class="col-lg-9">
-          <article class="bg-white p-4 rounded shadow-sm position-relative">
-            <div>
+          <article>
+            <div class="bg-white p-4 rounded shadow-sm position-relative mb-3">
               <h1 class="text-medium mt-1"><%= post.title %></h1>
               <small
-                ><i class="fas fa-user"></i> <%- post.creator.username %></small
+                ><i class="fas fa-user"></i>
+                <a class="text-dark" href="/profile/<%= post.creator._id %>"
+                  ><%- post.creator.username %></a
+                ></small
               >
               <br />
               <small
@@ -35,17 +39,25 @@
               >
 
               <!-- Edit post -->
-              <% if (String(user._id) === String(post.creator._id)) { %>
+              <% if (user && String(user._id) === String(post.creator._id)) { %>
               <div class="m-3 position-absolute top-0 end-0">
                 <a
                   href="/post/edit/<%= post._id %>"
                   class="btn btn-outline-dark btn-sm"
-                  ><i class="fas fa-edit"></i
-                ></a>
+                  ><i class="fas fa-edit"></i>
+                </a>
+                <a
+                  href="/api/post/delete/<%= post._id %>"
+                  id="deletePost"
+                  class="btn btn-outline-danger btn-sm"
+                  ><i class="fas fa-trash"></i>
+                </a>
               </div>
               <% } %>
             </div>
-            <div class="markdown-body">
+            <div
+              class="markdown-body bg-white p-4 rounded shadow-sm position-relative"
+            >
               <%- post.sanitizedHtml || post.content %>
             </div>
           </article>
@@ -54,8 +66,9 @@
           <div class="mt-4">
             <h4 class="text-medium">Comments</h4>
             <form
-              action="/api/posts/<%= post._id %>/comment"
+              action="/api/post/<%= post._id %>/comment"
               method="POST"
+              id="comment-form"
               class="mb-3"
             >
               <div class="mb-3">
@@ -75,14 +88,16 @@
               <div class="list-group-item">
                 <div class="d-flex w-100 justify-content-between">
                   <h5 class="mb-1">
-                    <%- comment.creator.username %> <% if (String(user.username)
-                    === String(comment.creator.username)) { %>
+                    <%- comment.creator.username %> <% if (user &&
+                    String(user.username) === String(comment.creator.username))
+                    { %>
                     <small class="badge bg-warning fw-normal">You</small>
-                    <a
-                      href="/api/post/<%= post._id %>/comment/<%= comment._id %>/delete"
+                    <button
+                      onclick="deleteComment('<%= post._id %>', '<%= comment._id %>')"
                       class="btn btn-outline-danger btn-sm"
-                      ><i class="fas fa-trash"></i
-                    ></a>
+                    >
+                      <i class="fas fa-trash"></i>
+                    </button>
                     <% } %>
                   </h5>
                   <small><%- comment.createdAt.toDateString() %></small>
@@ -99,5 +114,56 @@
     </main>
 
     <%- include("./partials/footer.ejs") %>
+
+    <script>
+      const deletePost = document.getElementById("deletePost");
+      deletePost?.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (confirm("Are you sure you want to delete this post?")) {
+          fetch(deletePost.href, { method: "DELETE" })
+            .then((res) => res.json())
+            .then((res) => {
+              alert(res.message);
+              window.location.href = "/";
+            })
+            .catch((err) => {
+              alert("Failed to delete post");
+            });
+        }
+      });
+
+      const form = document.getElementById("comment-form");
+      form?.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const comment = form.comment.value;
+        fetch(form.action, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ comment }),
+        })
+          .then((res) => res.json())
+          .then((res) => window.location.reload())
+          .catch((err) => {
+            console.log(err);
+            alert("Failed to add comment");
+          });
+      });
+
+      function deleteComment(postId, commentId) {
+        if (confirm("Are you sure you want to delete this comment?")) {
+          fetch(`/api/post/${postId}/comment/${commentId}`, {
+            method: "DELETE",
+          })
+            .then((res) => res.json())
+            .then((res) => {
+              alert(res.message);
+              window.location.reload();
+            })
+            .catch((err) => {
+              alert("Failed to delete comment");
+            });
+        }
+      }
+    </script>
   </body>
 </html>

@@ -27,23 +27,38 @@ body {
 }
 
 .dropdown-item:hover {
-  background-color: #e5570b19;
+  background-color: #fff7ed;
   color: #f97316;
   text-decoration: underline;
 }
 
-.sidebar a {
+.list-group a {
   text-decoration: none;
   color: inherit;
 }
 
-.sidebar a:hover {
+.list-group a:hover {
   text-decoration: underline;
 }
 
 .swiper {
   width: 100%;
   height: 300px;
+}
+
+.swiper-pagination-bullet-active {
+  --swiper-theme-color: #f97316;
+}
+
+.swiper-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease-in-out;
+}
+
+.swiper .card-body:hover + .swiper-image {
+  transform: scale(1.1);
 }
 
 #swiper-button-prev, #swiper-button-next {
@@ -76,4 +91,8 @@ body {
   #swiper-button-next {
     right: 10px;
   }
+}
+
+.markdown-body img {
+  border-radius: 5px;
 }

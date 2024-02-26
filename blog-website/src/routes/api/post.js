@@ -119,7 +119,7 @@ router.get("/posts", async (req, res) => {
 });
 
 // Add a comment to a post
-router.post("/posts/:postId/comment", authMiddleware, async (req, res) => {
+router.post("/post/:postId/comment", authMiddleware, async (req, res) => {
   try {
     const { postId } = req.params;
     const { comment: text } = req.body;
@@ -133,12 +133,37 @@ router.post("/posts/:postId/comment", authMiddleware, async (req, res) => {
     post.comments.push(comment._id);
     await post.save();
 
-    res.redirect(`/post/${postId}`);
-    // res.send({ message: "Comment added successfully" });
+    res.send({ message: "Comment added successfully" });
   } catch (error) {
     console.log(error);
     res.status(500).send({ message: "Internal Server Error" });
   }
 });
+
+// Delete a comment from a post
+router.delete(
+  "/post/:postId/comment/:commentId",
+  authMiddleware,
+  async (req, res) => {
+    try {
+      const { postId, commentId } = req.params;
+
+      // Find the post and remove the comment's id from the comments array
+      const post = await Post.findById(postId);
+      post.comments = post.comments.filter(
+        (comment) => comment.toString() !== commentId
+      );
+      await post.save();
+
+      // Delete the comment
+      await Comment.findByIdAndDelete(commentId);
+
+      res.send({ message: "Comment deleted successfully" });
+    } catch (error) {
+      console.log(error);
+      res.status(500).send({ message: "Internal Server Error" });
+    }
+  }
+);
 
 module.exports = router;

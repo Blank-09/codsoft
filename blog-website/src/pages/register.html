@@ -4,21 +4,22 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Register Page</title>
+    <link rel="icon" href="/assets/img/blog.png" />
     <link rel="stylesheet" href="/assets/css/auth.css" />
   </head>
 
   <body>
     <div class="container">
       <div class="form-container">
-        <form action="/auth/register" method="POST">
+        <form action="/auth/register" method="POST" id="form">
           <h1>Register</h1>
+          <div class="form-group">
+            <label for="fullname">Fullname</label>
+            <input type="text" id="fullname" name="fullname" required />
+          </div>
           <div class="form-group">
             <label for="username">Username</label>
             <input type="text" id="username" name="username" required />
-          </div>
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" required />
           </div>
           <div class="form-group">
             <label for="password">Password</label>
@@ -39,5 +40,46 @@
         </form>
       </div>
     </div>
+
+    <script>
+      // Form Validation
+      const form = document.getElementById("form");
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const fullname = form.fullname.value;
+        const username = form.username.value;
+        const password = form.password.value;
+        const passwordConfirm = form.passwordConfirm.value;
+
+        if (fullname.length < 3) {
+          alert("Fullname must be at least 3 characters");
+          return;
+        }
+
+        if (username.length < 3) {
+          alert("Username must be at least 3 characters");
+          return;
+        }
+
+        if (!/^[a-zA-Z0-9_]+$/.test(username)) {
+          alert("Username must contain only letters, numbers, and underscores");
+          return;
+        }
+
+        if (password.length < 6) {
+          alert("Password must be at least 6 characters");
+          return;
+        }
+
+        if (password !== passwordConfirm) {
+          alert("Passwords do not match");
+          return;
+        }
+
+        form.submit();
+      });
+    </script>
   </body>
 </html>

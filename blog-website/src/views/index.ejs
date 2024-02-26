@@ -11,6 +11,7 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
+    <link rel="icon" href="/assets/img/blog.png" />
     <link rel="stylesheet" href="/assets/css/swiper-bundle.min.css" />
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/assets/css/styles.css" />
@@ -28,16 +29,32 @@
           <!-- Additional required wrapper -->
           <div class="swiper-wrapper">
             <!-- Slides -->
-            <div class="swiper-slide bg-dark rounded">Slide 1</div>
-            <div class="swiper-slide bg-dark rounded">Slide 2</div>
-            <div class="swiper-slide bg-dark rounded">Slide 3</div>
-            <div class="swiper-slide bg-dark rounded">Slide 4</div>
-            <div class="swiper-slide bg-dark rounded">Slide 5</div>
-            <div class="swiper-slide bg-dark rounded">Slide 6</div>
-            <div class="swiper-slide bg-dark rounded">Slide 7</div>
+            <% slider.forEach(slide => { %>
+            <div class="swiper-slide rounded">
+              <div class="card position-relative overflow-hidden h-100">
+                <div
+                  class="card-body text-center d-flex flex-column justify-content-between z-1 text-bg-dark bg-opacity-25"
+                >
+                  <h5 class="mt-4"><%= slide.title %></h5>
+                  <p class="mb-0"><%= slide.subtitle %></p>
+
+                  <div>
+                    <a href="/post/1" class="btn btn-outline-light btn-sm"
+                      >Read More</a
+                    >
+                  </div>
+                </div>
+                <img
+                  src="<%= slide.image %>"
+                  class="swiper-image position-absolute top-0 start-0"
+                  alt="Card Image"
+                />
+              </div>
+            </div>
+            <% }) %>
           </div>
-          <div class="swiper-pagination"></div>
         </div>
+        <div class="swiper-pagination" style="bottom: -25px"></div>
         <div id="swiper-button-prev" class="shadow">
           <i class="fas fa-chevron-left"></i>
         </div>
@@ -50,33 +67,20 @@
     <div class="container my-5">
       <div class="row">
         <div class="col-md-8">
-          <div class="row">
+          <h3 class="mb-3">Post List</h3>
+          <div class="list-group list-group-flush gap-2">
             <% posts.forEach((post) => { %>
-            <div class="col-md-6">
-              <div class="card mb-4">
-                <img
-                  src="<%= post.image %>"
-                  class="card-img-top"
-                  alt="<%= post.title %>"
-                />
-                <div class="card-body">
-                  <h5 class="card-title"><%= post.title %></h5>
-                  <p class="card-text">
-                    <%= post.content.substring(0, 100) %>...
-                  </p>
-                  <a href="/post/<%= post._id %>" class="btn btn-dark"
-                    >Read More</a
-                  >
-                </div>
-                <div class="card-footer">
-                  <small class="text-muted">
-                    <i class="far fa-user"></i> <%- post.author.username %> |
-                    <i class="far fa-calendar"></i>
-                    <%= new Date(post.createdAt).toDateString() %>
-                  </small>
-                </div>
+            <a
+              href="/post/<%= post._id %>"
+              class="list-group-item list-group-item-action rounded shadow-sm"
+            >
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1"><%= post.title %></h5>
+                <small><%= post.createdAt.toDateString() %></small>
               </div>
-            </div>
+              <p class="mb-1"><%= post.content.substring(0, 100) %>...</p>
+              <small><%= post.creator.username %></small>
+            </a>
             <% }) %>
           </div>
         </div>
@@ -113,6 +117,14 @@
         navigation: {
           nextEl: "#swiper-button-next",
           prevEl: "#swiper-button-prev",
+        },
+
+        autoplay: {
+          delay: 3000,
+        },
+
+        keyboard: {
+          enabled: true,
         },
       });
     </script>

@@ -40,15 +40,13 @@ router.get("/register", (req, res) => {
 
 router.post("/login", async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { username, password } = req.body;
 
-    if (!email || !password) {
-      return res.status(400).send({
-        message: "Please enter all fields",
-      });
+    if (!username || !password) {
+      return res.status(400).send({ message: "Please enter all fields" });
     }
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ username });
     if (!user) {
       return res.status(400).send({ message: "User does not exist" });
     }
@@ -61,57 +59,35 @@ router.post("/login", async (req, res) => {
     const token = jwt.sign({ userId: user._id }, jwtSecret, {
       expiresIn: "30d",
     });
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,
-    });
 
+    res.cookie("token", token, { httpOnly: true, secure: true });
     res.redirect("/");
   } catch (error) {
     console.log(error);
-    res.status(500).send({
-      message: "Internal server error",
-    });
+    res.status(500).send({ message: "Internal server error" });
   }
 });
 
 router.post("/register", async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { fullname, username, password } = req.body;
 
-    if (!username || !email || !password) {
-      return res.status(400).send({
-        message: "Please enter all fields",
-      });
+    if (!fullname || !username || !password) {
+      return res.status(400).send({ message: "Please enter all fields" });
     }
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ username });
     if (user) {
-      return res.status(400).send({
-        message: "User already exists",
-      });
+      return res.status(400).send({ message: "Username already exists" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    try {
-      const user = await User.create({
-        username,
-        email,
-        password: hashedPassword,
-      });
-      res.status(201).json({ message: "User Created", data: { id: user._id } });
-    } catch (error) {
-      if (error.code === 11000) {
-        res.status(409).json({ message: "User already in use" });
-      }
-      res.status(500).json({ message: "Internal server error" });
-    }
+    await User.create({ fullname, username, password: hashedPassword });
+    res.redirect("/auth/login");
   } catch (error) {
     console.log(error);
-    res.status(500).send({
-      message: "Internal server error",
-    });
+    res.status(500).send({ message: "Internal server error" });
   }
 });
 

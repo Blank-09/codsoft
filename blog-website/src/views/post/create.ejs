@@ -11,6 +11,7 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
+    <link rel="icon" href="/assets/img/blog.png" />
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/assets/css/styles.css" />
     <script src="/assets/js/bootstrap.min.js"></script>
@@ -31,7 +32,7 @@
             required
           />
         </div>
-        <div class="mb-3">
+        <!-- <div class="mb-3">
           <label for="description" class="form-label">Post Description</label>
           <input
             type="text"
@@ -40,7 +41,7 @@
             name="description"
             required
           />
-        </div>
+        </div> -->
         <div class="mb-3">
           <label for="content" class="form-label">Content (Markdown)</label>
           <textarea
@@ -53,7 +54,13 @@
         </div>
 
         <div class="text-end">
-          <a href="/" class="btn btn-outline-dark">Cancel</a>
+          <button
+            type="button"
+            onclick="history.back()"
+            class="btn btn-outline-dark"
+          >
+            Cancel
+          </button>
           <button type="submit" class="btn btn-dark">Create</button>
         </div>
       </form>

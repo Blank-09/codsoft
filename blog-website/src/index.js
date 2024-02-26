@@ -13,6 +13,9 @@ const apiRoute = require("./routes/api");
 
 // Connect to DB
 const connectDB = require("./config/db");
+const User = require("./models/User");
+const Post = require("./models/Post");
+const Comment = require("./models/Comment");
 connectDB();
 
 // Middlewares
@@ -30,7 +33,10 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: true, maxAge: 60000 },
+    cookie: {
+      secure: true,
+      expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+    },
   })
 );
 

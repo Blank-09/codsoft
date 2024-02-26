@@ -32,36 +32,6 @@ router.use(async (req, res, next) => {
   }
 });
 
-const posts = [
-  {
-    title: "Post 1",
-    content: "This is the first post",
-    createdAt: new Date(),
-    image: "https://via.placeholder.com/150x100",
-    author: {
-      username: "user1",
-    },
-  },
-  {
-    title: "Post 2",
-    content: "This is the first post",
-    createdAt: new Date(),
-    image: "https://via.placeholder.com/150x100",
-    author: {
-      username: "user1",
-    },
-  },
-  {
-    title: "Post 3",
-    content: "This is the first post",
-    createdAt: new Date(),
-    image: "https://via.placeholder.com/150x100",
-    author: {
-      username: "user1",
-    },
-  },
-];
-
 const categories = [
   {
     name: "Technology",
@@ -77,12 +47,64 @@ const categories = [
   },
 ];
 
+const slider = [
+  {
+    title: "ReactJs Testing",
+    subtitle: "Learn how to test React components",
+    createdAt: new Date(),
+    image: "/assets/img/react.jpg",
+  },
+  {
+    title: "JavaScript Basics",
+    subtitle: "Learn the basics of JavaScript",
+    createdAt: new Date(),
+    image: "/assets/img/javascript.jpg",
+  },
+  {
+    title: "php Basics",
+    subtitle: "Learn how to build server-side applications with php",
+    createdAt: new Date(),
+    image: "/assets/img/code-screen.jpg",
+  },
+  {
+    title: "CSS Flexbox Guide",
+    subtitle: "Learn how to layout your web pages with CSS Flexbox",
+    createdAt: new Date(),
+    image: "/assets/img/keyboard.jpg",
+  },
+  {
+    title: "HTML5 Features",
+    subtitle: "Learn about the new features in HTML5",
+    createdAt: new Date(),
+    image: "/assets/img/html.jpg",
+  },
+  {
+    title: "Python for Data Science",
+    subtitle: "Learn how to use Python for data analysis and visualization",
+    createdAt: new Date(),
+    image: "/assets/img/data-science.jpg",
+  },
+  {
+    title: "Cyber Security",
+    subtitle: "Learn about cybersecurity and protecting your applications",
+    createdAt: new Date(),
+    image: "/assets/img/cyber-security.jpg",
+  },
+  {
+    title: "Ruby on Rails Tutorial",
+    subtitle: "Learn how to build web applications with Ruby on Rails",
+    createdAt: new Date(),
+    image: "/assets/img/laptop.jpg",
+  },
+];
+
 router.get("/", async (req, res) => {
   const recentPosts = await Post.find({}).sort({ createdAt: "desc" }).limit(10);
 
   res.render("index", {
-    posts,
+    posts: recentPosts,
     user: req.user,
+    slider,
     recentPosts,
     categories,
   });
@@ -98,6 +120,60 @@ router.get("/logout", (req, res) => {
 
 router.get("/register", (req, res) => {
   res.redirect("/auth/register");
+});
+
+router.get("/search", async (req, res) => {
+  const { q } = req.query;
+  const posts = await Post.find({ title: { $regex: q || "", $options: "i" } });
+  const recentPosts = await Post.find({}).sort({ createdAt: "desc" }).limit(10);
+
+  res.render("search", {
+    posts,
+    user: req.user,
+    recentPosts,
+    categories,
+    q,
+  });
+});
+
+router.get("/profile", async (req, res) => {
+  try {
+    const posts = await Post.find({ creator: req.user._id });
+    const recentPosts = await Post.find({})
+      .sort({ createdAt: "desc" })
+      .limit(10);
+    res.render("profile", {
+      user: req.user,
+      profile: req.user,
+      posts,
+      recentPosts,
+      categories,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: "Internal Server Error" });
+  }
+});
+
+router.get("/profile/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findById(id);
+    const posts = await Post.find({ creator: id });
+    const recentPosts = await Post.find({})
+      .sort({ createdAt: "desc" })
+      .limit(10);
+    res.render("profile", {
+      user: req.user,
+      profile: user,
+      posts,
+      recentPosts,
+      categories,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ message: "Internal Server Error" });
+  }
 });
 
 router.get("/post/create", (req, res) => {

@@ -16,7 +16,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
+        <li class="nav-item mt-3 mt-lg-0">
           <form class="d-flex input-group" action="/search" method="GET">
             <input
               class="form-control shadow-none"
@@ -46,9 +46,9 @@
           </button>
           <ul class="dropdown-menu dropdown-menu-lg-end p-2 shadow-sm border-0">
             <li>
-              <a class="dropdown-item" href="/<%- user._id %>">
-                <div><%- user.username %></div>
-                <small>@<%- user.email %></small>
+              <a class="dropdown-item" href="/profile/<%- user._id %>">
+                <div><%- user.fullname %></div>
+                <small>@<%- user.username %></small>
               </a>
             </li>
             <li><hr class="dropdown-divider" /></li>
