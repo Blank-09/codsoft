@@ -2,7 +2,7 @@
   "name": "blog-website",
   "version": "1.0.0",
   "description": "My blog website using node.js and express.js",
-  "main": "src/index.js",
+  "main": "./src/index.js",
   "scripts": {
     "start": "./src/index.js",
     "dev": "nodemon ./src/index.js"
@@ -13,6 +13,9 @@
   ],
   "author": "Blank-09",
   "license": "ISC",
+  "bin" : {
+    "execute" : "./src/index.js"
+  },
   "dependencies": {
     "bcrypt": "^5.1.1",
     "connect-mongo": "^5.1.0",
