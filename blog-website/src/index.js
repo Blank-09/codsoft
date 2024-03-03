@@ -15,9 +15,6 @@ const apiRoute = require("./routes/api");
 
 // Connect to DB
 const connectDB = require("./config/db");
-const User = require("./models/User");
-const Post = require("./models/Post");
-const Comment = require("./models/Comment");
 connectDB();
 
 // Middlewares

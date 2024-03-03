@@ -62,11 +62,12 @@
                   class="btn btn-dark btn-sm text-white"
                   ><i class="far fa-edit"></i>
                 </a>
-                <a
-                  href="/api/post/delete/<%= post._id %>"
+                <button
+                  onclick="deletePost('<%= post._id %>')"
                   class="btn btn-danger btn-sm text-white"
-                  ><i class="fas fa-trash"></i>
-                </a>
+                >
+                  <i class="fas fa-trash"></i>
+                </button>
                 <% } %>
                 <span class="ms-auto font-monospace">
                   <small
@@ -85,5 +86,21 @@
     </main>
 
     <%- include("./partials/footer.ejs") %>
+
+    <script>
+      function deletePost(id) {
+        if (confirm("Are you sure you want to delete this post?")) {
+          fetch(`/api/post/delete/${id}`, { method: "DELETE" })
+            .then((res) => res.json())
+            .then((res) => {
+              alert(res.message);
+              window.location.reload();
+            })
+            .catch((err) => {
+              alert("Failed to delete post");
+            });
+        }
+      }
+    </script>
   </body>
 </html>
