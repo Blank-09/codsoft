@@ -38,7 +38,7 @@ const Sidebar = () => {
           </li>
         </ul>
 
-        <div>
+        {/* <div>
           <h3 className="text-xs font-semibold text-gray-400 pt-4 px-2">Projects</h3>
 
           <ul className="pt-2 pb-4 space-y-1 text-sm">
@@ -51,7 +51,7 @@ const Sidebar = () => {
               </Button>
             </li>
           </ul>
-        </div>
+        </div> */}
 
         <ul className="pt-2 mt-auto">
           <li>

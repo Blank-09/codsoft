@@ -9,6 +9,7 @@ export const AuthContext = createContext({
     fullname: '',
     username: '',
     token: '',
+    id: '',
   },
   setUser: (prev) => {},
 })
@@ -18,15 +19,11 @@ export const useAuth = () => React.useContext(AuthContext)
 
 // Create Context Provider
 export const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isAuthenticated, setIsAuthenticated] = useState(true)
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')))
 
   useEffect(() => {
     const token = localStorage.getItem('token')
-
-    if (!token) {
-      return
-    }
 
     axios
       .get('/api/auth/verify', {
@@ -40,11 +37,11 @@ export const AuthProvider = ({ children }) => {
         }
       })
       .catch((err) => {
-        // localStorage.removeItem('token')
-        // localStorage.removeItem('user')
+        localStorage.removeItem('token')
+        localStorage.removeItem('user')
         axios.defaults.headers.common['Authorization'] = ''
         setIsAuthenticated(false)
-        // setUser(null)
+        setUser(null)
       })
   }, [])
 

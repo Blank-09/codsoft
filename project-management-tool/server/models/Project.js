@@ -1,6 +1,11 @@
 import mongoose from 'mongoose'
 
 const projectSchema = new mongoose.Schema({
+  creator: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  },
   name: {
     type: String,
     required: true,
@@ -13,9 +18,13 @@ const projectSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
-  tag: {
+  category: {
     type: String,
     required: true,
+  },
+  status: {
+    type: String,
+    default: 'open',
   },
   assignedUsers: {
     type: [
@@ -24,8 +33,14 @@ const projectSchema = new mongoose.Schema({
         ref: 'User',
       },
     ],
-    required: true,
+    default: [],
   },
+  comments: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Comment',
+    },
+  ],
 })
 
 export default mongoose.model('Project', projectSchema)

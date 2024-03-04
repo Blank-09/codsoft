@@ -1,22 +1,23 @@
 import React from 'react'
+import { format } from 'date-fns'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card'
 import { Avatar } from './ui/avatar'
 import { MinidenticonImg } from './Minidenticon'
 import { Link } from 'react-router-dom'
 
-const ProjectCard = () => {
+const ProjectCard = ({ project }) => {
   return (
     <Card className="shadow border-none">
-      <Link to="/dashboard/project">
+      <Link to={`/project/${project._id}`}>
         <CardHeader>
-          <CardTitle>Project Title</CardTitle>
-          <CardDescription>Mon March 24, 2024</CardDescription>
+          <CardTitle>{project.name}</CardTitle>
+          <CardDescription>{format(project.dueDate, 'PPPP')}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex -space-x-3 mt-3">
-            {new Array(Math.floor(Math.random() * 6) + 1).fill(0).map((_, i) => (
-              <Avatar key={i} className="shadow w-12 h-12 bg-white border p-1">
-                <MinidenticonImg username={i.toString().padStart(10, '0')} />
+            {project.assignedUsers.map((user) => (
+              <Avatar key={user._id} className="shadow w-12 h-12 bg-white border p-1">
+                <MinidenticonImg username={user.username} />
               </Avatar>
             ))}
           </div>

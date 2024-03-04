@@ -3,7 +3,7 @@ import { createBrowserRouter } from 'react-router-dom'
 import Auth from './Auth'
 import DashboardRouter from './DashboardRouter'
 
-import Root from '../pages/Root'
+import ErrorHandler from '../pages/ErrorHandler'
 import Login from '../pages/Login'
 import Logout from '../pages/Logout'
 import Register from '../pages/Register'
@@ -13,10 +13,6 @@ import Project from '../pages/project/Project'
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Root />,
-  },
-  {
-    path: '/dashboard',
     element: <DashboardRouter />,
     children: [
       {
@@ -24,7 +20,7 @@ const router = createBrowserRouter([
         element: <Dashboard />,
       },
       {
-        path: '/dashboard/project',
+        path: '/project/:id',
         element: <Project />,
       },
     ],
@@ -46,6 +42,10 @@ const router = createBrowserRouter([
         element: <Logout />,
       },
     ],
+  },
+  {
+    path: '*',
+    element: <ErrorHandler />,
   },
 ])
 

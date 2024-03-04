@@ -7,7 +7,7 @@ const Logout = () => {
 
     setTimeout(() => {
       window.location.href = '/auth/login'
-    }, 1500)
+    }, 1000)
   }, [])
 
   return <h1>Logging out...</h1>

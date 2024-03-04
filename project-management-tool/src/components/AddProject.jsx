@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react'
+import React from 'react'
+import axios from 'axios'
 
 import {
   Dialog,
@@ -15,15 +16,22 @@ import { Input } from './ui/input'
 import { Label } from './ui/label'
 import { Button } from './ui/button'
 import { Badge } from './ui/badge'
-import { Checkbox } from './ui/checkbox'
 import { Textarea } from './ui/textarea'
 
-import { useMatch } from 'react-router-dom'
+import { useMatch, useNavigate } from 'react-router-dom'
 import { EyeIcon, EyeOffIcon, Plus } from 'lucide-react'
 import { toast } from 'sonner'
-import UsersSelect from './UsersSelect'
 
-import Select from 'react-select'
+import ReactSelect from 'react-select'
+
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from './ui/select'
 
 const categories = [
   { value: 'development', label: 'Development' },
@@ -40,30 +48,35 @@ const initialState = {
   assignedUsers: [],
 }
 
-const users = [
-  { value: '1', label: 'Priyanshu T' },
-  { value: '2', label: 'Alice' },
-  { value: '3', label: 'John Smith' },
-  { value: '4', label: 'Jane Smith' },
-]
-
 const AddProject = () => {
   const [data, setData] = React.useState(initialState)
+  const [users, setUsers] = React.useState([])
+
+  const navigate = useNavigate()
 
   // const match = useMatch('/config-editor/edit/:id')
   // const isEditMode = match?.params.id !== undefined
   const isEditMode = false
 
-  function onClickHandler() {
-    const commonAttributes = {
-      name: data.name,
-      details: data.details,
-      dueDate: data.dueDate,
-      category: data.category,
-      assignedUsers: data.assignedUsers,
-    }
+  React.useEffect(() => {
+    axios.get('/api/users').then((res) => {
+      setUsers(res.data.map((user) => ({ value: user._id, label: user.fullname })))
+    })
+  }, [])
 
-    setData(initialState)
+  function onClickHandler() {
+    axios
+      .post('/api/project/create', {
+        ...data,
+        assignedUsers: data.assignedUsers.map((user) => user.value),
+      })
+      .then((res) => {
+        navigate('/project/' + res.data._id)
+        toast.success('Project added successfully')
+      })
+      .catch((error) => {
+        toast.error(error.response.data.message)
+      })
   }
 
   function onChangeHandler(e) {
@@ -98,14 +111,26 @@ const AddProject = () => {
                 Markdown
               </Badge>
             </Label>
-            <Textarea id="details" />
+            <Textarea id="details" value={data.details} onChange={onChangeHandler} />
           </div>
 
           <div className="flex gap-2">
             <div className="w-3/5 grid gap-2">
-              <Label htmlFor="tag">Tag</Label>
-              {/* <TagComboBox /> */}
-              <Input id="tag" onChange={onChangeHandler} value={data.category} />
+              <Label htmlFor="category">Category</Label>
+              <Select onValueChange={(value) => setData((prev) => ({ ...prev, category: value }))}>
+                <SelectTrigger id="category">
+                  <SelectValue placeholder="Select Category" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    {categories.map((category) => (
+                      <SelectItem key={category.value} value={category.value}>
+                        {category.label}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             </div>
             <div className="w-2/5 grid gap-2">
               <Label htmlFor="dueDate">Due Date</Label>
@@ -119,7 +144,7 @@ const AddProject = () => {
 
           <div className="grid gap-2">
             <Label htmlFor="assignedUsers">Assign to:</Label>
-            <Select
+            <ReactSelect
               id="assignedUsers"
               options={users}
               onChange={(option) => setData((prev) => ({ ...prev, assignedUsers: option }))}

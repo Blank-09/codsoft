@@ -46,7 +46,7 @@ const Login = () => {
         setIsAuthenticated(true)
         setUser(res.data)
         toast.success('Login successful')
-        navigate('/dashboard')
+        window.location.href = '/dashboard'
       })
       .catch((error) => {
         toast.error(error.response.data.message)

@@ -6,6 +6,8 @@ import connectDB from './config/db.js'
 
 // Routes
 import authRoute from './routes/auth.js'
+import projectRoute from './routes/api/project.js'
+import userRoute from './routes/api/user.js'
 
 const app = express()
 
@@ -17,6 +19,8 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
 // Routes
+app.use('/api', projectRoute)
+app.use('/api', userRoute)
 app.use('/api/auth', authRoute)
 
 ViteExpress.listen(app, process.env.PORT, () => {
