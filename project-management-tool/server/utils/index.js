@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-const jwtSecret = process.env.JWT_SECRET
+import { JWT_SECRET } from '../constants.js'
 
 const authMiddleware = (req, res, next) => {
   const token = req.headers['authorization']
@@ -9,7 +9,7 @@ const authMiddleware = (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, jwtSecret)
+    const decoded = jwt.verify(token, JWT_SECRET)
     req.userId = decoded.userId
     next()
   } catch (error) {

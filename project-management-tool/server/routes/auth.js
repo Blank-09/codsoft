@@ -39,7 +39,7 @@ router.post('/login', async (req, res) => {
       expiresIn: '30d',
     })
 
-    res.send({ token })
+    res.send({ token, id: user._id, username: user.username, fullname: user.fullname })
   } catch (error) {
     console.log(error)
     res.status(500).send({ message: 'Internal server error' })

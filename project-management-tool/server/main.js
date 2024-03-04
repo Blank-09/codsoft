@@ -1,6 +1,5 @@
 import express from 'express'
 import ViteExpress from 'vite-express'
-import { config } from 'dotenv'
 
 //
 import connectDB from './config/db.js'
@@ -11,7 +10,6 @@ import authRoute from './routes/auth.js'
 const app = express()
 
 // Configurations
-config()
 connectDB()
 
 // Middlewares

@@ -19,7 +19,7 @@ export const useAuth = () => React.useContext(AuthContext)
 // Create Context Provider
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')))
 
   useEffect(() => {
     const token = localStorage.getItem('token')
@@ -40,11 +40,11 @@ export const AuthProvider = ({ children }) => {
         }
       })
       .catch((err) => {
-        localStorage.removeItem('token')
-        localStorage.removeItem('user')
+        // localStorage.removeItem('token')
+        // localStorage.removeItem('user')
         axios.defaults.headers.common['Authorization'] = ''
         setIsAuthenticated(false)
-        setUser(null)
+        // setUser(null)
       })
   }, [])
 

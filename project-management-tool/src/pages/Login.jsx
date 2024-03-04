@@ -46,7 +46,7 @@ const Login = () => {
         setIsAuthenticated(true)
         setUser(res.data)
         toast.success('Login successful')
-        navigate('/')
+        navigate('/dashboard')
       })
       .catch((error) => {
         toast.error(error.response.data.message)
@@ -68,7 +68,12 @@ const Login = () => {
             </div>
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="password">Password</Label>
-              <Input id="password" name="password" placeholder="Enter your password" />
+              <Input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Enter your password"
+              />
             </div>
           </div>
         </CardContent>
