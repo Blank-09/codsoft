@@ -7,7 +7,7 @@
   "author": "Blank-09",
   "scripts": {
     "dev": "nodemon server/main.js -w server",
-    "start": "NODE_ENV=production node src/server/main.js",
+    "start": "NODE_ENV=production node server/main.js",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "build": "vite build"
   },
